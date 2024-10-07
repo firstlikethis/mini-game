@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โดนพ้มแจ้งจับแล้วววว</title>
+    <meta name="theme-color" content="#ff5733">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("images/bg.jpg");
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+        .image-section {
+            margin-bottom: 20px;
+        }
+        .image-section img {
+            max-width: 50%;
+            height: auto;
+            -webkit-border-radius: 80%;
+            -moz-border-radius: 80%;
+            border-radius: 80%;
+        }
+        .button-section {
+            margin-bottom: 20px;
+        }
+        .content-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* CSS for both buttons */
+        .button-24, .button-23 {
+            background: #FF4742;
+            border: 1px solid #FF4742;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 16px;
+            min-height: 40px;
+            outline: 0;
+            padding: 12px 14px;
+            text-align: center;
+            text-rendering: geometricprecision;
+            text-transform: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            vertical-align: middle;
+            margin: 10px;
+        }
+        
+        .button-24:hover,
+        .button-24:active {
+            background-color: initial;
+            background-position: 0 0;
+            color: #FF4742;
+        }
+        
+        .button-24:active {
+            opacity: .5;
+        }
+
+        .button-23 {
+            background: #4287f5;
+            border: 1px solid #4287f5;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .button-23:hover {
+            background-color: initial;
+            color: #4287f5;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff69b4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center center;
+            background-size: contain;
+            opacity: 0;
+            animation: floatHeart 3s ease-in-out forwards;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            25% {
+                opacity: 1;
+            }
+            75% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .teasing-message {
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #4287f5;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #4287f5;
+            z-index: 1000;
+            animation: fadeInOut 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="image-section">
+            <img src="images/acatpic.jpg" alt="Centered Image">
+        </section>
+        
+        <section class="button-section">
+            <button class="button-24" role="button" onclick="createHearts()">⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆ Okayyyy!!! ⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆</button>
+            <button class="button-23" role="button" id="nopeButton">『 °*• ❀ •*°』 Nope! 『 °*• ❀ •*°』</button>
+        </section>
+        
+        <section class="content-section">
+            
+        </section>
+    </div>
+
+    <script>
+
+        const teasingMessages = [
+            "กดไม่ได้หรอกแบร่ๆๆ",
+            "ยากจังงง",
+            "เนอะๆๆ",
+            "มันกดไม่ได้!!",
+            "พยายามจังเลยยยย"
+        ];
+
+        let moveCount = 0;
+
+        function showTeasingMessage(x, y) {
+            const message = teasingMessages[Math.floor(Math.random() * teasingMessages.length)];
+            const messageElement = document.createElement('div');
+            messageElement.className = 'teasing-message';
+            messageElement.textContent = message;
+            messageElement.style.left = `${x}px`;
+            messageElement.style.top = `${y}px`;
+            document.body.appendChild(messageElement);
+
+            setTimeout(() => {
+                messageElement.remove();
+            }, 2000);
+        }
+
+        function createHearts() {
+            const heartCount = 100; // เพิ่มจำนวนหัวใจ
+            const duration = 5000; // ระยะเวลาที่หัวใจอยู่บนหน้าจอ (มิลลิวินาที)
+
+            for (let i = 0; i < heartCount; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.bottom = '-50px'; // เริ่มจากใต้หน้าจอเล็กน้อย
+                    
+                    const size = Math.random() * 30 + 10; // ขนาดระหว่าง 10px ถึง 40px
+                    heart.style.width = `${size}px`;
+                    heart.style.height = `${size}px`;
+                    
+                    const speed = Math.random() * 2 + 1; // ความเร็วระหว่าง 1 ถึง 3
+                    const direction = Math.random() > 0.5 ? 1 : -1; // ทิศทางซ้ายหรือขวา
+                    
+                    document.body.appendChild(heart);
+
+                    let start = null;
+                    function animate(timestamp) {
+                        if (!start) start = timestamp;
+                        const progress = timestamp - start;
+                        const moveY = Math.min(progress / duration * window.innerHeight, window.innerHeight);
+                        const moveX = Math.sin(progress / 200) * 50 * direction; // การเคลื่อนที่แบบโค้ง
+                        
+                        heart.style.transform = `translate(${moveX}px, -${moveY}px)`;
+                        heart.style.opacity = 1 - (progress / duration);
+                        
+                        if (progress < duration) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            heart.remove();
+                        }
+                    }
+                    requestAnimationFrame(animate);
+
+                }, Math.random() * 2000); // สุ่มเวลาเริ่มต้นภายใน 2 วินาที
+            }
+        }
+
+        const nopeButton = document.getElementById('nopeButton');
+        const container = document.querySelector('.container');
+
+        container.addEventListener('mousemove', (e) => {
+            const buttonRect = nopeButton.getBoundingClientRect();
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // Check if mouse is within 100px of the button
+            if (
+                mouseX > buttonRect.left - 100 &&
+                mouseX < buttonRect.right + 100 &&
+                mouseY > buttonRect.top - 100 &&
+                mouseY < buttonRect.bottom + 100
+
+
+            ) {
+                // Move the button to a new random position
+                const newX = Math.random() * (window.innerWidth - buttonRect.width);
+                const newY = Math.random() * (window.innerHeight - buttonRect.height);
+
+                nopeButton.style.position = 'fixed';
+                nopeButton.style.left = `${newX}px`;
+                nopeButton.style.top = `${newY}px`;
+
+                moveCount++;
+
+                if (moveCount % 2 === 0) {
+                    showTeasingMessage(mouseX, mouseY);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
