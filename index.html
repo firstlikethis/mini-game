@@ -226,6 +226,20 @@
             font-size: 18px;
             font-weight: bold;
         }
+        .spacebar-message {
+            position: fixed;
+            top: 60px;
+            left: 125px;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #FF4742;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #FF4742;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -233,7 +247,7 @@
         <section class="image-section">
             <img src="images/acatpic.jpg" alt="Centered Image">
         </section>
-        
+        <div class="spacebar-message">ลองกด spacebar ดูสิ</div>
         <section class="button-section">
             <button class="button-24" role="button" onclick="createHeartsAndShowMessage()">⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆ Okayyyy!!! ⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆</button>
             <button class="button-23" role="button" id="nopeButton">『 °*• ❀ •*°』 Nope! 『 °*• ❀ •*°』</button>
