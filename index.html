@@ -134,6 +134,98 @@
             0%, 100% { opacity: 0; }
             10%, 90% { opacity: 1; }
         }
+
+        .heart-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff69b4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            background-size: 100% 100%;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 1001;
+        }
+
+        .wiggle {
+            animation: wiggle 0.5s ease infinite;
+        }
+
+        @keyframes wiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .button-24:hover {
+            animation: wiggle 0.5s ease infinite;
+        }
+
+        .flower {
+            position: fixed;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .night-mode {
+            background-color: #e6e6fa;
+            color: #4b0082;
+        }
+
+        .night-mode .button-24,
+        .night-mode .button-23 {
+            background-color: #9370db;
+            border-color: #9370db;
+            color: #fff;
+        }
+
+        .night-mode-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #dda0dd;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .special-heart {
+            position: fixed;
+            font-size: 50px;
+            user-select: none;
+            pointer-events: none;
+            animation: specialHeartFloat 3s ease-in-out;
+        }
+
+        @keyframes specialHeartFloat {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .score-counter {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -143,16 +235,22 @@
         </section>
         
         <section class="button-section">
-            <button class="button-24" role="button" onclick="createHearts()">⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆ Okayyyy!!! ⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆</button>
+            <button class="button-24" role="button" onclick="createHeartsAndShowMessage()">⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆ Okayyyy!!! ⋆｡ ﾟ☁︎｡ ⋆｡ ﾟ☾ ﾟ｡ ⋆</button>
             <button class="button-23" role="button" id="nopeButton">『 °*• ❀ •*°』 Nope! 『 °*• ❀ •*°』</button>
         </section>
+
+        <div class="score-counter" id="scoreCounter">Score: 0</div>
+
+        <button class="night-mode-toggle" onclick="toggleNightMode()">🌙</button>
+
+        <div class="heart-message" id="heartMessage">น่ารักกกก</div>
         
-        <section class="content-section">
-            
-        </section>
+        <audio id="cuteSound" src="audio/weee.mp3"></audio>
     </div>
 
     <script>
+
+        
 
         const teasingMessages = [
             "กดไม่ได้หรอกแบร่ๆๆ",
@@ -220,6 +318,112 @@
                 }, Math.random() * 2000); // สุ่มเวลาเริ่มต้นภายใน 2 วินาที
             }
         }
+
+        const cuteMessages = [
+            "น่ารักกกก", "งุ้ยยยยยย", "กดปุ่มนี้แหละะ", "อิอิ", "แฮ่"
+        ];
+
+        function getRandomMessage() {
+            return cuteMessages[Math.floor(Math.random() * cuteMessages.length)];
+        }
+
+        function showHeartMessage() {
+            const heartMessage = document.getElementById('heartMessage');
+            heartMessage.textContent = getRandomMessage();
+            heartMessage.style.opacity = '1';
+            setTimeout(() => {
+                heartMessage.style.opacity = '0';
+            }, 3000);
+        }
+
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.classList.add('flower');
+            flower.textContent = '🌸';
+            flower.style.left = Math.random() * window.innerWidth + 'px';
+            flower.style.top = '-50px';
+            document.body.appendChild(flower);
+
+            let start = null;
+            const duration = 5000;
+
+            function animate(timestamp) {
+                if (!start) start = timestamp;
+                const progress = timestamp - start;
+                const moveY = Math.min(progress / duration * window.innerHeight, window.innerHeight);
+                const moveX = Math.sin(progress / 200) * 50;
+                
+                flower.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                flower.style.opacity = 1 - (progress / duration);
+                
+                if (progress < duration) {
+                    requestAnimationFrame(animate);
+                } else {
+                    flower.remove();
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        let score = 0;
+
+        function updateScore() {
+            score++;
+            document.getElementById('scoreCounter').textContent = `Score: ${score}`;
+        }
+
+        function createHeartsAndShowMessage() {
+            createHearts();
+            showHeartMessage();
+            playCuteSound();
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createFlower, Math.random() * 2000);
+            }
+            updateScore();
+        }
+
+        function createSpecialHeart(x, y) {
+            const specialHeart = document.createElement('div');
+            specialHeart.classList.add('special-heart');
+            specialHeart.textContent = '💖';
+            specialHeart.style.left = `${x}px`;
+            specialHeart.style.top = `${y}px`;
+            document.body.appendChild(specialHeart);
+
+            setTimeout(() => {
+                specialHeart.remove();
+            }, 3000);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                createSpecialHeart(x, y);
+                playCuteSound();
+            }
+        });
+
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+        }
+
+        function playCuteSound() {
+            const audio = document.getElementById('cuteSound');
+            audio.play();
+        }
+
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('mouseover', () => {
+                img.classList.add('wiggle');
+            });
+            img.addEventListener('mouseout', () => {
+                img.classList.remove('wiggle');
+            });
+        });
+
 
         const nopeButton = document.getElementById('nopeButton');
         const container = document.querySelector('.container');
